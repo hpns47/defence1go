@@ -15,7 +15,7 @@ type RegularGuest struct {
 type VIPGuest struct {
 	ID        string
 	Name  string
-	level int
+	Level int
 }
 
 func (guest RegularGuest) GetID() string {
@@ -30,7 +30,7 @@ func (guest VIPGuest) GetID() string {
 }
 
 func (guest VIPGuest) DisplayName() string {
-	return fmt.Sprintf("%s | vip: %s ", guest.Name,guest.level)
+	return fmt.Sprintf("%s | vip: %s ", guest.Name,guest.Level)
 }
 
 func FormatGuest(guest Guest) string {
@@ -38,7 +38,7 @@ func FormatGuest(guest Guest) string {
 	case RegularGuest:
 		return fmt.Sprintf("Regular Guest: %s (ID: %s)", v.Name, v.ID)
 	case VIPGuest:
-		return fmt.Sprintf("VIP Guest: %s (ID: %s, Level: %d)", v.Name, v.ID, v.level)
+		return fmt.Sprintf("VIP Guest: %s (ID: %s, Level: %d)", v.Name, v.ID, v.Level)
 	default:
 		return "Unknown Guest Type"
 	}

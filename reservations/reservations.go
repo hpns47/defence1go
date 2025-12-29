@@ -7,10 +7,10 @@ import (
 
 type Reservation struct {
 	ID string
-	guestID string
-	table int
-	people int
-	status string
+	GuestID string
+	Table int
+	People int
+	Status string
 }
 
 type Manager struct {
@@ -23,7 +23,7 @@ func NewManager() *Manager {
 	}
 }
 
-func (m *Manager) addReservation(reservation Reservation) error {
+func (m *Manager) AddReservation(reservation Reservation) error {
 	if reservation.ID == "" {
 		return errors.New("reservation ID cannot be empty")
 	}
@@ -31,51 +31,51 @@ func (m *Manager) addReservation(reservation Reservation) error {
 	if _,exists := m.items[reservation.ID]; exists {
 		return errors.New("reservation with this ID already exists")
 	}
-	if reservation.guestID == "" {
+	if reservation.GuestID == "" {
 		return errors.New("guest ID cannot be empty")
 	}
-	if reservation.people <= 0 || reservation.people > 10 {
+	if reservation.People <= 0 || reservation.People > 10 {
 		return errors.New("number of people must be greater than zero")
 	}
-	if reservation.table <= 0 || reservation.table > 50 {
+	if reservation.Table <= 0 || reservation.Table > 50 {
 		return errors.New("table number must be between 1 and 50")
 	}
-	if reservation.status == "" {
-		reservation.status = "ACTIVE"
+	if reservation.Status == "" {
+		reservation.Status = "ACTIVE"
 	}
 	
 	m.items[reservation.ID] = reservation
 	return nil
 }
 
-func (m *Manager) cancelReservation(reservationID string) error {
+func (m *Manager) CancelReservation(reservationID string) error {
 	reservation, exists := m.items[reservationID]
 	if !exists {
 		return errors.New("reservation not found")
 	}
 	
-	if reservation.status == "CANCELLED" {
+	if reservation.Status == "CANCELLED" {
 		return errors.New("reservation is already cancelled")
 	}
-	reservation.status = "CANCELLED"
+	reservation.Status = "CANCELLED"
 	m.items[reservationID] = reservation
 	return nil
 }
 
-func (m *Manager) listReservations() []Reservation {
+func (m *Manager) ListReservations() []Reservation {
 	var reservations []Reservation
 	for _, reservation := range m.items {
-		if reservation.status != "CANCELLED" {
+		if reservation.Status != "CANCELLED" {
 			reservations = append(reservations, reservation)
 		}
 	}
 	return reservations
 }
 
-func (manager *Manager) listByGuest(guestID string) []Reservation {
+func (manager *Manager) ListByGuest(guestID string) []Reservation {
 	var reservations []Reservation
 	for _, reservation := range manager.items {
-		if reservation.guestID == guestID && reservation.status != "CANCELLED" {
+		if reservation.GuestID == guestID && reservation.Status != "CANCELLED" {
 			reservations = append(reservations, reservation)
 		}
 	}
@@ -83,11 +83,11 @@ func (manager *Manager) listByGuest(guestID string) []Reservation {
 }
 
 
-func (m *Manager) tableUsage() map[int]int {
+func (m *Manager) TableUsage() map[int]int {
 	usage := make(map[int]int)
 	for _, reservation := range m.items {
-		if reservation.status != "CANCELLED" {
-			usage[reservation.table]++
+		if reservation.Status != "CANCELLED" {
+			usage[reservation.Table]++
 		}
 	}
 	return usage
